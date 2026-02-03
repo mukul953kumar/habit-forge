@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitForge - Advanced Habit & Goal Tracker Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="title">HABIT FORGE</h1>
+            <div class="header-controls">
+                <div class="month-selector">
+                    <select id="monthSelect">
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                    <select id="yearSelect">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+                <button id="viewReportsBtn" onclick="habitTracker.showReports()">📊 View Reports</button>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="main-content">
+            <!-- Left Section -->
+            <section class="left-section">
+                <!-- Top Stats Row -->
+                <div class="stats-row">
+                    <!-- Overall Daily Progress -->
+                    <div class="card progress-card">
+                        <h3>Overall Daily Progress</h3>
+                        <div class="chart-container">
+                            <canvas id="overallProgressChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Overview -->
+                    <div class="card weekly-card">
+                        <h3>Weekly Overview</h3>
+                        <div class="chart-container">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Progress Summary -->
+                <div class="global-progress">
+                    <div class="progress-item">
+                        <span class="label">Completed</span>
+                        <span class="value completed" id="completedCount">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="label">Left</span>
+                        <span class="value left" id="leftCount">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="label">Overall %</span>
+                        <span class="value percentage" id="overallPercentage">0%</span>
+                    </div>
+                </div>
+
+                <!-- Top 10 Daily Habits -->
+                <div class="card top-habits">
+                    <h3>Top 10 Daily Habits</h3>
+                    <div class="habits-list" id="topHabitsList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Add Goal Section -->
+                <div class="card add-goal-section">
+                    <h3>Add New Goal</h3>
+                    <div class="add-goal-form">
+                        <input type="text" id="goalInput" placeholder="Enter your goal/habit..." maxlength="50">
+                        <button id="addGoalBtn" onclick="habitTracker.addGoal()">Add Goal</button>
+                    </div>
+                </div>
+
+                <!-- Main Habit Checklist Grid -->
+                <div class="card habit-grid">
+                    <h3>Habit Checklist</h3>
+                    <div class="grid-container">
+                        <div class="grid-header">
+                            <div class="habit-name-header">Habit</div>
+                            <div class="week-header" data-week="1">Week 1</div>
+                            <div class="week-header" data-week="2">Week 2</div>
+                            <div class="week-header" data-week="3">Week 3</div>
+                            <div class="week-header" data-week="4">Week 4</div>
+                            <div class="week-header" data-week="5">Week 5</div>
+                        </div>
+                        <div class="grid-body" id="habitGridBody">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Section - Habit Progress Panel -->
+            <section class="right-section">
+                <div class="card habit-progress-panel">
+                    <h3>Habit Progress</h3>
+                    <div class="habit-progress-list" id="habitProgressList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>HabitForge</h3>
+                <p>Forge better habits, one day at a time.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li>Daily Tracking</li>
+                        <li>Progress Analytics</li>
+                        <li>Monthly Reports</li>
+                        <li>Streak Monitoring</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li>Help Center</li>
+                        <li>Contact Us</li>
+                        <li>Privacy Policy</li>
+                        <li>Terms of Service</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 HabitForge. Built with passion for personal growth.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Reports Modal -->
+    <div id="reportsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Monthly Reports</h2>
+                <button class="close-btn" onclick="habitTracker.closeReports()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="report-controls">
+                    <select id="reportYearSelect">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                    <button id="generateReportBtn" onclick="habitTracker.generateReport()">Generate Report</button>
+                </div>
+                <div id="reportContent" class="report-content">
+                    <!-- Report will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
